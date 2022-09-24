@@ -22,4 +22,4 @@ New difficult point here, ACE  value!! Refactoring, new data structure handling,
 ==  Step 8 : Check for royal flush
 
 
-Thhat 's all folks
+That 's all folks

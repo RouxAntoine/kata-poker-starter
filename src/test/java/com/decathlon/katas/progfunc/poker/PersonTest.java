@@ -234,6 +234,7 @@ public class PersonTest {
         // When
         // Then
         assertTrue(dealer.verifyHasColor(hand));
+        assertFalse(dealer.verifyHasStraightFlush(hand));
     }
 
     @Test
@@ -268,6 +269,7 @@ public class PersonTest {
         // When
         // Then
         assertTrue(dealer.verifyHasStraight(hand));
+        assertFalse(dealer.verifyHasStraightFlush(hand));
     }
 
     @Test
@@ -285,6 +287,7 @@ public class PersonTest {
         // When
         // Then
         assertTrue(dealer.verifyHasStraight(hand));
+        assertFalse(dealer.verifyHasStraightFlush(hand));
     }
 
     @Test
@@ -302,5 +305,22 @@ public class PersonTest {
         // When
         // Then
         assertFalse(dealer.verifyHasStraight(hand));
+    }
+
+    @Test
+    @DisplayName("Assert that a hand is a straight with same Color")
+    public void isHandAStraightFlush() {
+        // Given
+        Hand hand = new Hand(List.of(
+                new Card(Rank.ACE, Color.TREFLE),
+                new Card(Rank.TWO, Color.TREFLE),
+                new Card(Rank.THREE, Color.TREFLE),
+                new Card(Rank.FOUR, Color.TREFLE),
+                new Card(Rank.FIVE, Color.TREFLE)
+        ));
+
+        // When
+        // Then
+        assertTrue(dealer.verifyHasStraightFlush(hand));
     }
 }
