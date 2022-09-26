@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.decathlon.katas.progfunc.poker.HandFixture.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,19 +32,7 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a pair is well formed")
     public void isHandAPair() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.DIAMOND),
-
-                new Card(Rank.TEN, Color.DIAMOND),
-                new Card(Rank.SEVEN, Color.SPADE),
-                new Card(Rank.KING, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasPair(hand));
+        assertTrue(dealer.verifyHasPair(PAIR_HAND));
     }
 
     @Test
@@ -66,19 +55,8 @@ public class PersonTest {
     @Test
     @DisplayName("Assert hand contain a three of a kind")
     public void isHandAThreeOfAKind() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.SEVEN, Color.SPADE),
-                new Card(Rank.KING, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasThreeOfAKind(hand));
-        assertFalse(dealer.verifyHasPair(hand));
+        assertTrue(dealer.verifyHasThreeOfAKind(THREE_OF_A_KIND_HAND));
+        assertFalse(dealer.verifyHasPair(THREE_OF_A_KIND_HAND));
     }
 
     @Test
@@ -101,20 +79,9 @@ public class PersonTest {
     @Test
     @DisplayName("Assert hand contain a four of a kind")
     public void isHandAFourOfAKind() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.KING, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasFourOfAKind(hand));
-        assertFalse(dealer.verifyHasThreeOfAKind(hand));
-        assertFalse(dealer.verifyHasPair(hand));
+        assertTrue(dealer.verifyHasFourOfAKind(FOUR_OF_A_KIND_HAND));
+        assertFalse(dealer.verifyHasThreeOfAKind(FOUR_OF_A_KIND_HAND));
+        assertFalse(dealer.verifyHasPair(FOUR_OF_A_KIND_HAND));
     }
 
     @Test
@@ -137,18 +104,7 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a full house")
     public void isHandAFullHouse() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.FOUR, Color.DIAMOND),
-                new Card(Rank.FOUR, Color.SPADE),
-                new Card(Rank.FOUR, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasFullHouse(hand));
+        assertTrue(dealer.verifyHasFullHouse(FULL_HAND));
     }
 
     @Test
@@ -171,18 +127,7 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand contain two pair")
     public void isHandTwoPair() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.FOUR, Color.DIAMOND),
-                new Card(Rank.FOUR, Color.SPADE),
-                new Card(Rank.TEN, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasTwoPair(hand));
+        assertTrue(dealer.verifyHasTwoPair(TWO_PAIR_HAND));
     }
 
     @Test
@@ -222,19 +167,8 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand contain a color")
     public void isHandAColor() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.KING, Color.TREFLE),
-                new Card(Rank.SEVEN, Color.TREFLE),
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.THREE, Color.TREFLE)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasColor(hand));
-        assertFalse(dealer.verifyHasStraightFlush(hand));
+        assertTrue(dealer.verifyHasColor(COLOR_HAND));
+        assertFalse(dealer.verifyHasStraightFlush(COLOR_HAND));
     }
 
     @Test
@@ -257,37 +191,15 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a straight 1,2,3,4,5")
     public void isHandAStraightOnACE() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.ACE, Color.TREFLE),
-                new Card(Rank.TWO, Color.TREFLE),
-                new Card(Rank.THREE, Color.TREFLE),
-                new Card(Rank.FOUR, Color.TREFLE),
-                new Card(Rank.FIVE, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasStraight(hand));
-        assertFalse(dealer.verifyHasStraightFlush(hand));
+        assertTrue(dealer.verifyHasStraight(STRAIGHT_HAND));
+        assertFalse(dealer.verifyHasStraightFlush(STRAIGHT_HAND));
     }
 
     @Test
     @DisplayName("Assert that a hand is a straight 10,J,Q,K,1")
-    public void isHandAStraightOnTen() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.TEN, Color.TREFLE),
-                new Card(Rank.JACK, Color.TREFLE),
-                new Card(Rank.QUEEN, Color.TREFLE),
-                new Card(Rank.KING, Color.TREFLE),
-                new Card(Rank.ACE, Color.HEART)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasStraight(hand));
-        assertFalse(dealer.verifyHasStraightFlush(hand));
+    public void isHandARoyalFlush() {
+        assertTrue(dealer.verifyHasStraight(ROYAL_FLUSH_HAND));
+        assertFalse(dealer.verifyHasStraightFlush(ROYAL_FLUSH_HAND));
     }
 
     @Test
@@ -310,17 +222,6 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a straight with same Color")
     public void isHandAStraightFlush() {
-        // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.ACE, Color.TREFLE),
-                new Card(Rank.TWO, Color.TREFLE),
-                new Card(Rank.THREE, Color.TREFLE),
-                new Card(Rank.FOUR, Color.TREFLE),
-                new Card(Rank.FIVE, Color.TREFLE)
-        ));
-
-        // When
-        // Then
-        assertTrue(dealer.verifyHasStraightFlush(hand));
+        assertTrue(dealer.verifyHasStraightFlush(STRAIGHT_FLUSH_HAND));
     }
 }

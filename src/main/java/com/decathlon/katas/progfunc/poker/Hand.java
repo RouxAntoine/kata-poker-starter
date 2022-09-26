@@ -9,7 +9,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 /**
  * hand of cards (5)
- * use  this as you want, refactor it as often as needed
+ * use this as you want, refactor it as often as needed
  *
  * @author deadbrain
  */
@@ -47,5 +47,9 @@ public record Hand(List<Card> cards) {
 
     private List<Card> sortBy(ToIntFunction<Card> comparatorFunction) {
         return cards.stream().sorted(Comparator.comparingInt(comparatorFunction)).toList();
+    }
+
+    public HandValue evaluate() {
+        return null;
     }
 }

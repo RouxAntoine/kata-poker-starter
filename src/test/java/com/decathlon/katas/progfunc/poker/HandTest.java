@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.decathlon.katas.progfunc.poker.HandFixture.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,5 +62,15 @@ public class HandTest {
         // Then
         assertEquals(sortedHand.get(0).rank(), Rank.TWO);
         assertEquals(sortedHand.get(4).rank(), Rank.ACE);
+    }
+
+    @Test
+    public void evaluateHand() {
+        // Given
+        // When
+        HandValue handValue = ROYAL_FLUSH_HAND.evaluate();
+
+        // Then
+        assertEquals(handValue, );
     }
 }
