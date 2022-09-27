@@ -1,5 +1,7 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.hand.Hand;
+
 import java.util.Comparator;
 import java.util.Optional;
 

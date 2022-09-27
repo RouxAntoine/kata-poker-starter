@@ -1,10 +1,10 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.decathlon.katas.progfunc.poker.HandFixture.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,13 +13,15 @@ public class HandTest {
     @Test
     void hasNIdenticalCards() {
         // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FOUR, Color.DIAMOND),
-                new Card(Rank.FIVE, Color.DIAMOND),
-                new Card(Rank.SEVEN, Color.SPADE),
-                new Card(Rank.KING, Color.HEART)
-        ));
+        Hand hand = new Hand(
+                List.of(
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.DIAMOND),
+                        new Card(Rank.FIVE, Color.DIAMOND),
+                        new Card(Rank.SEVEN, Color.SPADE),
+                        new Card(Rank.KING, Color.HEART)
+                )
+        );
 
         // When
         boolean hasTwoIdenticalCard = hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, 2);
@@ -31,13 +33,15 @@ public class HandTest {
     @Test
     void sortByMinRank() {
         // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.TWO, Color.DIAMOND),
-                new Card(Rank.ACE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FOUR, Color.TREFLE),
-                new Card(Rank.KING, Color.TREFLE)
-        ));
+        Hand hand = new Hand(
+                List.of(
+                        new Card(Rank.TWO, Color.DIAMOND),
+                        new Card(Rank.ACE, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.KING, Color.TREFLE)
+                )
+        );
         // When
         List<Card> sortedHand = hand.sortByMinRank();
 
@@ -49,13 +53,15 @@ public class HandTest {
     @Test
     void sortByMaxRank() {
         // Given
-        Hand hand = new Hand(List.of(
-                new Card(Rank.TWO, Color.DIAMOND),
-                new Card(Rank.ACE, Color.TREFLE),
-                new Card(Rank.FIVE, Color.TREFLE),
-                new Card(Rank.FOUR, Color.TREFLE),
-                new Card(Rank.KING, Color.TREFLE)
-        ));
+        Hand hand = new Hand(
+                List.of(
+                        new Card(Rank.TWO, Color.DIAMOND),
+                        new Card(Rank.ACE, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.KING, Color.TREFLE)
+                )
+        );
         // When
         List<Card> sortedHand = hand.sortByMaxRank();
 
@@ -65,12 +71,17 @@ public class HandTest {
     }
 
     @Test
-    public void evaluateHand() {
-        // Given
-        // When
-        HandValue handValue = ROYAL_FLUSH_HAND.evaluate();
-
-        // Then
-        assertEquals(handValue, );
+    void toto() {
+        Hand hand = new Hand(
+                List.of(
+                        new Card(Rank.TWO, Color.DIAMOND),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE)
+                )
+        );
+//        Map<Rank, List<Card>> nIdenticalCardGroupBy = hand.getNIdenticalCardGroupBy(2, Card::rank);
+//        System.out.println(nIdenticalCardGroupBy);
     }
 }
