@@ -3,6 +3,10 @@ package com.decathlon.katas.progfunc.poker;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
+import static java.lang.Math.pow;
+
 public class Person {
 
     public static final int TWO_CARD = 2;
@@ -12,53 +16,90 @@ public class Person {
     private static final int REPEATED_ONE_TIME = 1;
     public static final int REPEATED_TWO_TIME = 2;
 
-    public boolean verifyHasPair(@NotNull Hand hand) {
-        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, TWO_CARD)
-                && !this.verifyHasFullHouse(hand);
+    public Optional<Double> computeHasPair(@NotNull Hand hand) {
+        if (hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, TWO_CARD) && this.computeHasFullHouse(hand).isEmpty()) {
+            return Optional.of( pow(10, HandValue.PAIR.getValue()) * hand.value(Tuple::max));
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasThreeOfAKind(@NotNull Hand hand) {
-        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD)
-                && !this.verifyHasFullHouse(hand);
+    public Optional<Double> computeHasThreeOfAKind(@NotNull Hand hand) {
+        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD)
+                && this.computeHasFullHouse(hand).isEmpty()) {
+            return Optional.of(pow(10, HandValue.THREE_OF_A_KIND.getValue()) * hand.value(Tuple::max));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasFourOfAKind(@NotNull Hand hand) {
-        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, FOUR_CARD);
+    public Optional<Double> computeHasFourOfAKind(@NotNull Hand hand) {
+        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, FOUR_CARD)) {
+            return Optional.of( pow(10, HandValue.FOUR_OF_KIND.getValue()) * hand.value(Tuple::max));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasFullHouse(@NotNull Hand hand) {
-        return hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_ONE_TIME
-                && hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD);
+    public Optional<Double> computeHasFullHouse(@NotNull Hand hand) {
+        if(hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_ONE_TIME
+                && hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD)) {
+            return Optional.of( pow(10, HandValue.FULL_HOUSE.getValue()) * hand.value(Tuple::max));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasTwoPair(@NotNull Hand hand) {
-        return hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_TWO_TIME;
+    public Optional<Double> computeHasTwoPair(@NotNull Hand hand) {
+        if (hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_TWO_TIME) {
+            return Optional.of(pow(10, HandValue.TWO_PAIR.getValue()) * hand.value(Tuple::max));
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasColor(@NotNull Hand hand) {
-        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD)
-                && !this.verifyHasStraightFlush(hand);
+    public Optional<Double> computeHasColor(@NotNull Hand hand) {
+        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD)
+                && this.computeHasStraightFlush(hand).isEmpty()) {
+            return Optional.of(pow(10, HandValue.FLUSH.getValue()) * hand.value(Tuple::max));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasStraight(@NotNull Hand hand) {
-        return hand.hasNFollowingCard(FIVE_CARD)
-                && ! this.verifyHasStraightFlush(hand);
+    public Optional<Double> computeHasStraight(@NotNull Hand hand) {
+        if(hand.hasNFollowingCard(FIVE_CARD)
+                && this.computeHasStraightFlush(hand).isEmpty()) {
+            if(hand.cards().stream().anyMatch(card -> card.rank().equals(Rank.KING))) {
+                return Optional.of(pow(10, HandValue.STRAIGHT.getValue()) * hand.value(Tuple::max));
+            } else {
+                return Optional.of(pow(10, HandValue.STRAIGHT.getValue()) * hand.value(Tuple::min));
+            }
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public boolean verifyHasStraightFlush(@NotNull Hand hand) {
-        return hand.hasNFollowingCard(FIVE_CARD) && hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD);
+    public Optional<Double> computeHasStraightFlush(@NotNull Hand hand) {
+        if(hand.hasNFollowingCard(FIVE_CARD) && hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD)) {
+            if(hand.cards().stream().anyMatch(card -> card.rank().equals(Rank.KING))) {
+                return Optional.of(pow(10, HandValue.STRAIGHT_FLUSH.getValue()) * hand.value(Tuple::max));
+            }
+            else {
+                return Optional.of(pow(10, HandValue.STRAIGHT_FLUSH.getValue()) * hand.value(Tuple::min));
+            }
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public Integer computeHandValue(@NotNull Hand hand) {
-//        if(verifyHasPair(hand)) {
-//            Map<Rank, List<Card>> nIdenticalCardGroupBy = hand.getNIdenticalCardGroupBy(TWO_CARD, Card::rank)
-//                    .;
-//            return pow(10, HandValue.PAIR.getValue()) * nIdenticalCardGroupBy;
-//        }
-//        else {
-            return hand.cards().stream()
-                    .mapToInt(value -> value.rank().getTuple().max())
-                    .sum();
-//        }
+    public Integer computeSimpleHandValue(@NotNull Hand hand) {
+        return hand.value(Tuple::max);
     }
 }

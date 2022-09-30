@@ -71,7 +71,8 @@ public class HandTest {
     }
 
     @Test
-    void toto() {
+    void computeHandValue() {
+        // Given
         Hand hand = new Hand(
                 List.of(
                         new Card(Rank.TWO, Color.DIAMOND),
@@ -81,7 +82,11 @@ public class HandTest {
                         new Card(Rank.FIVE, Color.TREFLE)
                 )
         );
-//        Map<Rank, List<Card>> nIdenticalCardGroupBy = hand.getNIdenticalCardGroupBy(2, Card::rank);
-//        System.out.println(nIdenticalCardGroupBy);
+
+        // When
+        int value = hand.value(Tuple::max);
+
+        // Then
+        assertEquals(20, value);
     }
 }

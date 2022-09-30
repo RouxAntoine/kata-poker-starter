@@ -24,7 +24,6 @@ public class Dealer extends Person {
         } else if (handComparisonResult > 0) {
             return Optional.of(hand1);
         } else {
-            // TODO: compare hand value
             return Optional.empty();
         }
     }

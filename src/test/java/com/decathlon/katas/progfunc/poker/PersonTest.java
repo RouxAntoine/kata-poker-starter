@@ -5,12 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.decathlon.katas.progfunc.poker.HandFixture.COLOR_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.FOUR_OF_A_KIND_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.FULL_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.PAIR_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.ROYAL_FLUSH_HAND;
+import static com.decathlon.katas.progfunc.poker.HandFixture.ROYAL_STRAIGHT_FLUSH_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.STRAIGHT_FLUSH_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.STRAIGHT_HAND;
 import static com.decathlon.katas.progfunc.poker.HandFixture.THREE_OF_A_KIND_HAND;
@@ -22,11 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PersonTest {
 
-    private final Person person;
-
-    public PersonTest() {
-        this.person = new Person();
-    }
+    private final Person person = new Person();
 
     @Test
     @DisplayName("Assert that a hand is invalid without five card")
@@ -42,7 +40,9 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a pair is well formed")
     public void isHandAPair() {
-        assertTrue(person.verifyHasPair(PAIR_HAND));
+        Optional<Double> handValue = person.computeHasPair(PAIR_HAND);
+        assertTrue(handValue.isPresent());
+        assertEquals(4000, handValue.get());
     }
 
     @Test
@@ -59,14 +59,16 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasPair(hand));
+        assertFalse(person.computeHasPair(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert hand contain a three of a kind")
     public void isHandAThreeOfAKind() {
-        assertTrue(person.verifyHasThreeOfAKind(THREE_OF_A_KIND_HAND));
-        assertFalse(person.verifyHasPair(THREE_OF_A_KIND_HAND));
+        Optional<Double> handValue = person.computeHasThreeOfAKind(THREE_OF_A_KIND_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasPair(THREE_OF_A_KIND_HAND).isPresent());
+        assertEquals(350_000, handValue.get());
     }
 
     @Test
@@ -83,16 +85,18 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasThreeOfAKind(hand));
+        assertFalse(person.computeHasThreeOfAKind(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert hand contain a four of a kind")
     public void isHandAFourOfAKind() {
-        assertTrue(person.verifyHasFourOfAKind(FOUR_OF_A_KIND_HAND));
-        assertFalse(person.verifyHasThreeOfAKind(FOUR_OF_A_KIND_HAND));
-        assertFalse(person.verifyHasPair(FOUR_OF_A_KIND_HAND));
-        assertFalse(person.verifyHasTwoPair(FOUR_OF_A_KIND_HAND));
+        Optional<Double> handValue = person.computeHasFourOfAKind(FOUR_OF_A_KIND_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasThreeOfAKind(FOUR_OF_A_KIND_HAND).isPresent());
+        assertFalse(person.computeHasPair(FOUR_OF_A_KIND_HAND).isPresent());
+        assertFalse(person.computeHasTwoPair(FOUR_OF_A_KIND_HAND).isPresent());
+        assertEquals(3_300_000_000d, handValue.get());
     }
 
     @Test
@@ -109,16 +113,18 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasFourOfAKind(hand));
+        assertFalse(person.computeHasFourOfAKind(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert that a hand is a full house")
     public void isHandAFullHouse() {
-        assertTrue(person.verifyHasFullHouse(FULL_HAND));
-        assertFalse(person.verifyHasPair(FULL_HAND));
-        assertFalse(person.verifyHasThreeOfAKind(FULL_HAND));
-        assertFalse(person.verifyHasTwoPair(FULL_HAND));
+        Optional<Double> handValue = person.computeHasFullHouse(FULL_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasPair(FULL_HAND).isPresent());
+        assertFalse(person.computeHasThreeOfAKind(FULL_HAND).isPresent());
+        assertFalse(person.computeHasTwoPair(FULL_HAND).isPresent());
+        assertEquals(220_000_000, handValue.get());
     }
 
     @Test
@@ -135,14 +141,16 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasFullHouse(hand));
+        assertFalse(person.computeHasFullHouse(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert that a hand contain two pair")
     public void isHandTwoPair() {
-        assertTrue(person.verifyHasTwoPair(TWO_PAIR_HAND));
-        assertFalse(person.verifyHasPair(TWO_PAIR_HAND));
+        Optional<Double> handValue = person.computeHasTwoPair(TWO_PAIR_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasPair(TWO_PAIR_HAND).isPresent());
+        assertEquals(33_000, handValue.get());
     }
 
     @Test
@@ -159,14 +167,16 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasTwoPair(hand));
+        assertFalse(person.computeHasTwoPair(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert that a hand contain a color")
     public void isHandAColor() {
-        assertTrue(person.verifyHasColor(COLOR_HAND));
-        assertFalse(person.verifyHasStraightFlush(COLOR_HAND));
+        Optional<Double> handValue = person.computeHasColor(COLOR_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasStraightFlush(COLOR_HAND).isPresent());
+        assertEquals(33_000_000, handValue.get());
     }
 
     @Test
@@ -183,21 +193,25 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasColor(hand));
+        assertFalse(person.computeHasColor(hand).isPresent());
     }
 
     @Test
     @DisplayName("Assert that a hand is a straight 1,2,3,4,5")
-    public void isHandAStraightOnACE() {
-        assertTrue(person.verifyHasStraight(STRAIGHT_HAND));
-        assertFalse(person.verifyHasStraightFlush(STRAIGHT_HAND));
+    public void isHandAStraightOnOne() {
+        Optional<Double> handValue = person.computeHasStraight(STRAIGHT_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasStraightFlush(STRAIGHT_HAND).isPresent());
+        assertEquals(1_500_000, handValue.get());
     }
 
     @Test
     @DisplayName("Assert that a hand is a straight 10,J,Q,K,1")
     public void isHandARoyalFlush() {
-        assertTrue(person.verifyHasStraight(ROYAL_FLUSH_HAND));
-        assertFalse(person.verifyHasStraightFlush(ROYAL_FLUSH_HAND));
+        Optional<Double> handValue = person.computeHasStraight(ROYAL_FLUSH_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasStraightFlush(ROYAL_FLUSH_HAND).isPresent());
+        assertEquals(6_000_000, handValue.get());
     }
 
     @Test
@@ -214,18 +228,31 @@ public class PersonTest {
 
         // When
         // Then
-        assertFalse(person.verifyHasStraight(hand));
+        assertFalse(person.computeHasStraight(hand).isPresent());
     }
 
     @Test
-    @DisplayName("Assert that a hand is a straight with same Color")
-    public void isHandAStraightFlush() {
-        assertTrue(person.verifyHasStraightFlush(STRAIGHT_FLUSH_HAND));
-        assertFalse(person.verifyHasColor(STRAIGHT_FLUSH_HAND));
-        assertFalse(person.verifyHasStraight(STRAIGHT_FLUSH_HAND));
+    @DisplayName("Assert that a hand is a straight 1, 2, 3, 4, 5 with same Color")
+    public void isHandAStraightFlushOnOne() {
+        Optional<Double> handValue = person.computeHasStraightFlush(STRAIGHT_FLUSH_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasColor(STRAIGHT_FLUSH_HAND).isPresent());
+        assertFalse(person.computeHasStraight(STRAIGHT_FLUSH_HAND).isPresent());
+        assertEquals(15_000_000_000d, handValue.get());
     }
 
     @Test
+    @DisplayName("Assert that a hand is a straight 10, J, Q, K, A with same Color")
+    public void isHandARoyalStraightFlush() {
+        Optional<Double> handValue = person.computeHasStraightFlush(ROYAL_STRAIGHT_FLUSH_HAND);
+        assertTrue(handValue.isPresent());
+        assertFalse(person.computeHasColor(ROYAL_STRAIGHT_FLUSH_HAND).isPresent());
+        assertFalse(person.computeHasStraight(ROYAL_STRAIGHT_FLUSH_HAND).isPresent());
+        assertEquals(60_000_000_000d, handValue.get());
+    }
+
+    @Test
+    @DisplayName("Assert high card hand value")
     public void evaluateHighCard() {
         // Given
         Hand hand = new Hand(
@@ -247,31 +274,11 @@ public class PersonTest {
                 )
         );
         // When
-        Integer handValue = person.computeHandValue(hand);
-        Integer handWiInteger = person.computeHandValue(handWithAce);
+        Integer handValue = person.computeSimpleHandValue(hand);
+        Integer handWiInteger = person.computeSimpleHandValue(handWithAce);
 
         // Then
         assertEquals(44, handValue);
         assertEquals(52, handWiInteger);
-    }
-
-    @Test
-    public void evaluatePair() {
-        // Given
-        Hand hand = new Hand(
-                List.of(
-                        new Card(Rank.FIVE, Color.DIAMOND),
-                        new Card(Rank.SIX, Color.TREFLE),
-                        new Card(Rank.EIGHT, Color.TREFLE),
-                        new Card(Rank.EIGHT, Color.DIAMOND),
-                        new Card(Rank.KING, Color.TREFLE)
-                )
-        );
-
-        // When
-        Integer handValue = person.computeHandValue(hand);
-
-        // Then
-        assertEquals(824, handValue);
     }
 }

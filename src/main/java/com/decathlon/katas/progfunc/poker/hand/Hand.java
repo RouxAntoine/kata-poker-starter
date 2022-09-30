@@ -3,6 +3,7 @@ package com.decathlon.katas.progfunc.poker.hand;
 import com.decathlon.katas.progfunc.poker.Card;
 import com.decathlon.katas.progfunc.poker.Criteria;
 import com.decathlon.katas.progfunc.poker.HandValue;
+import com.decathlon.katas.progfunc.poker.Tuple;
 
 import java.util.Comparator;
 import java.util.List;
@@ -63,32 +64,12 @@ public record Hand(List<Card> cards) {
         return (diffMin == numberOfFollowingCard - 1 || diffMax == numberOfFollowingCard - 1);
     }
 
-//    public <T> Map<T, List<Card>> getNIdenticalCardGroupBy(int numberOfIdenticalCard, Function<Card, T> groupFunction) {
-//        Map<Rank, List<Card>> collect = new HashMap<>();
-//        for (Card card : cards) {
-//            Map.Entry<Rank, Card> entry = Map.entry(card.rank(), card);
-//            collect.compute(card.rank(), (rank, cards1) -> Stream.concat(cards1.stream(), card))
-//        }
-//
-//
-//        // card of same criteria grouped under key counting
-//        Map<Long, List<T>> cardCriteriaByN = cards.stream().collect(
-//                collectingAndThen(
-//                        groupingBy(groupFunction, counting()),
-//                        (Map<T, Long> rankLongMap) ->
-//                                rankLongMap.entrySet().stream()
-//                                        .collect(
-//                                                groupingBy(Map.Entry::getValue, mapping(Map.Entry::getKey, toList()))
-//                                        )
-//                )
-//        );
-//
-//        return getCardGroupedBy(groupFunction)
-//                .entrySet()
-//                .stream()
-//                .filter(cards -> cards.getValue().size() == numberOfIdenticalCard)
-//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-//    }
+    public int value(ToIntFunction<Tuple> valueFunction) {
+        return cards.stream()
+                .map(card -> card.rank().getTuple())
+                .mapToInt(valueFunction)
+                .sum();
+    }
 
     public HandValue evaluate() {
         return null;
