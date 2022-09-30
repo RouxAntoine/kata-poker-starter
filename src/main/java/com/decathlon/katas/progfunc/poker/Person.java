@@ -11,15 +11,15 @@ public class Person {
     public static final int REPEATED_TWO_TIME = 2;
 
     public boolean verifyHasPair(Hand hand) {
-        return hand.hasNIdenticalCardsRank(TWO_CARD);
+        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, TWO_CARD);
     }
 
     public boolean verifyHasThreeOfAKind(Hand hand) {
-        return hand.hasNIdenticalCardsRank(THREE_CARD);
+        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD);
     }
 
     public boolean verifyHasFourOfAKind(Hand hand) {
-        return hand.hasNIdenticalCardsRank(FOUR_CARD);
+        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, FOUR_CARD);
     }
 
     public boolean verifyHasFullHouse(Hand hand) {
@@ -27,11 +27,11 @@ public class Person {
     }
 
     public boolean verifyHasTwoPair(Hand hand) {
-        return hand.howManyNIdenticalCardsRank(TWO_CARD) == REPEATED_TWO_TIME;
+        return hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_TWO_TIME;
     }
 
     public boolean verifyHasColor(Hand hand) {
-        return hand.hasNIdenticalColor(FIVE_CARD);
+        return hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD);
     }
 
     public boolean verifyHasStraight(Hand hand) {

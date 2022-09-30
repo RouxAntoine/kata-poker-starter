@@ -21,7 +21,7 @@ public class HandTest {
         ));
 
         // When
-        boolean hasTwoIdenticalCard = hand.hasNIdenticalCardsRank(2);
+        boolean hasTwoIdenticalCard = hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, 2);
 
         // Then
         assertTrue(hasTwoIdenticalCard);
