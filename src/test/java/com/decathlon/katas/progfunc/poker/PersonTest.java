@@ -1,5 +1,8 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.card.Card;
+import com.decathlon.katas.progfunc.poker.card.criteria.Color;
+import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

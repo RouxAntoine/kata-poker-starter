@@ -1,13 +1,32 @@
 package com.decathlon.katas.progfunc.poker.hand;
 
-import com.decathlon.katas.progfunc.poker.Card;
+public enum HandValue {
+    // Quinte flush
+    STRAIGHT_FLUSH(9),
+    // Carré
+    FOUR_OF_KIND(8),
+    // Full
+    FULL_HOUSE(7),
+    // Couleur
+    FLUSH(6),
+    // Suite
+    STRAIGHT(5),
+    // Brelan
+    THREE_OF_A_KIND(4),
+    // Double pair
+    TWO_PAIR(3),
+    // Pair
+    PAIR(2),
+    // Carte Haute
+    HIGH_CARD(1);
 
-import java.util.function.Function;
+    private final int value;
 
-public interface HandValue {
+    HandValue(int value) {
+        this.value = value;
+    }
 
-    Integer getFactor();
-
-    Function<Card, Integer> computeValue();
-
+    public int getValue() {
+        return value;
+    }
 }

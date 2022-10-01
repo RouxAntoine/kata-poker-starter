@@ -1,6 +1,10 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.card.Card;
+import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
+import com.decathlon.katas.progfunc.poker.card.criteria.Tuple;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
+import com.decathlon.katas.progfunc.poker.hand.HandValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -104,7 +108,7 @@ public class Person {
         return hand.value(Tuple::max);
     }
 
-    public Double computeHandValue(Hand hand) {
+    public Double computeHandValue(@NotNull Hand hand) {
         return Stream.of(
                         computeHasStraightFlush(hand),
                         computeHasColor(hand),

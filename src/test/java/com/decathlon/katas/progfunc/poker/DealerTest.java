@@ -1,25 +1,42 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.card.Card;
+import com.decathlon.katas.progfunc.poker.card.criteria.Color;
+import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.BDDMockito.given;
 
 class DealerTest {
 
+    private final Dealer dealer = new Dealer();
+
     @Test
-    public void hand2IsWinner() {
+    public void compositionStraightFlushWinnerWithHighestHandValue() {
         // Given
-        Dealer dealer = new Dealer();
-        Hand hand1 = HandFixture.FOUR_OF_A_KIND_HAND;
-        Hand hand2 = HandFixture.STRAIGHT_FLUSH_HAND;
+        Hand hand1 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.TREFLE),
+                        new Card(Rank.TWO, Color.TREFLE),
+                        new Card(Rank.THREE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE)
+                )
+        );
+        Hand hand2 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.TREFLE),
+                        new Card(Rank.KING, Color.TREFLE),
+                        new Card(Rank.QUEEN, Color.TREFLE),
+                        new Card(Rank.JACK, Color.TREFLE),
+                        new Card(Rank.TEN, Color.TREFLE)
+                )
+        );
 
         // When
         Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
@@ -30,11 +47,26 @@ class DealerTest {
     }
 
     @Test
-    public void hand1IsWinner() {
+    public void compositionTwoPairWinnerWithHighestHandValue() {
         // Given
-        Dealer dealer = new Dealer();
-        Hand hand1 = HandFixture.STRAIGHT_FLUSH_HAND;
-        Hand hand2 = HandFixture.FOUR_OF_A_KIND_HAND;
+        Hand hand1 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.TREFLE),
+                        new Card(Rank.ACE, Color.SPADE),
+                        new Card(Rank.KING, Color.TREFLE),
+                        new Card(Rank.KING, Color.HEART),
+                        new Card(Rank.QUEEN, Color.TREFLE)
+                )
+        );
+        Hand hand2 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.HEART),
+                        new Card(Rank.ACE, Color.DIAMOND),
+                        new Card(Rank.KING, Color.DIAMOND),
+                        new Card(Rank.KING, Color.SPADE),
+                        new Card(Rank.JACK, Color.HEART)
+                )
+        );
 
         // When
         Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
@@ -45,9 +77,38 @@ class DealerTest {
     }
 
     @Test
-    public void handsIsExEquo() {
+    public void noCompositionHighestHandWin() {
         // Given
-        Dealer dealer = new Dealer();
+        Hand hand1 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.SPADE),
+                        new Card(Rank.KING, Color.HEART),
+                        new Card(Rank.QUEEN, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.THREE, Color.TREFLE)
+                )
+        );
+        Hand hand2 = new Hand(
+                List.of(
+                        new Card(Rank.ACE, Color.HEART),
+                        new Card(Rank.KING, Color.DIAMOND),
+                        new Card(Rank.JACK, Color.HEART),
+                        new Card(Rank.SIX, Color.SPADE),
+                        new Card(Rank.FIVE, Color.DIAMOND)
+                )
+        );
+
+        // When
+        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+
+        // Then
+        assertTrue(winnerHand.isPresent());
+        assertEquals(winnerHand.get(), hand2);
+    }
+
+    @Test
+    public void handsIsIdentical() {
+        // Given
         Hand hand1 = HandFixture.FOUR_OF_A_KIND_HAND;
 
         // When

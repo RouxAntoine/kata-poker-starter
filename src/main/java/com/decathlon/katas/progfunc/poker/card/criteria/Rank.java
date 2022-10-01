@@ -1,4 +1,4 @@
-package com.decathlon.katas.progfunc.poker;
+package com.decathlon.katas.progfunc.poker.card.criteria;
 
 /**
  * Rank of any card

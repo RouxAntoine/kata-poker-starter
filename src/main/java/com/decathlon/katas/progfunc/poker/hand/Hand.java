@@ -1,9 +1,8 @@
 package com.decathlon.katas.progfunc.poker.hand;
 
-import com.decathlon.katas.progfunc.poker.Card;
-import com.decathlon.katas.progfunc.poker.Criteria;
-import com.decathlon.katas.progfunc.poker.HandValue;
-import com.decathlon.katas.progfunc.poker.Tuple;
+import com.decathlon.katas.progfunc.poker.card.Card;
+import com.decathlon.katas.progfunc.poker.card.criteria.Criteria;
+import com.decathlon.katas.progfunc.poker.card.criteria.Tuple;
 
 import java.util.Comparator;
 import java.util.List;
