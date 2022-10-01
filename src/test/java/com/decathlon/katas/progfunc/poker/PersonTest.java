@@ -40,9 +40,12 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a pair is well formed")
     public void isHandAPair() {
-        Optional<Double> handValue = person.computeHasPair(PAIR_HAND);
-        assertTrue(handValue.isPresent());
-        assertEquals(4000, handValue.get());
+        Optional<Double> composedHandValue = person.computeHasPair(PAIR_HAND);
+        assertTrue(composedHandValue.isPresent());
+        assertEquals(4000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(PAIR_HAND);
+        assertEquals(4000, handValue);
     }
 
     @Test
@@ -65,10 +68,13 @@ public class PersonTest {
     @Test
     @DisplayName("Assert hand contain a three of a kind")
     public void isHandAThreeOfAKind() {
-        Optional<Double> handValue = person.computeHasThreeOfAKind(THREE_OF_A_KIND_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasThreeOfAKind(THREE_OF_A_KIND_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasPair(THREE_OF_A_KIND_HAND).isPresent());
-        assertEquals(350_000, handValue.get());
+        assertEquals(350_000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(THREE_OF_A_KIND_HAND);
+        assertEquals(350_000, handValue);
     }
 
     @Test
@@ -91,12 +97,15 @@ public class PersonTest {
     @Test
     @DisplayName("Assert hand contain a four of a kind")
     public void isHandAFourOfAKind() {
-        Optional<Double> handValue = person.computeHasFourOfAKind(FOUR_OF_A_KIND_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasFourOfAKind(FOUR_OF_A_KIND_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasThreeOfAKind(FOUR_OF_A_KIND_HAND).isPresent());
         assertFalse(person.computeHasPair(FOUR_OF_A_KIND_HAND).isPresent());
         assertFalse(person.computeHasTwoPair(FOUR_OF_A_KIND_HAND).isPresent());
-        assertEquals(3_300_000_000d, handValue.get());
+        assertEquals(3_300_000_000d, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(FOUR_OF_A_KIND_HAND);
+        assertEquals(3_300_000_000d, handValue);
     }
 
     @Test
@@ -119,12 +128,15 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a full house")
     public void isHandAFullHouse() {
-        Optional<Double> handValue = person.computeHasFullHouse(FULL_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasFullHouse(FULL_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasPair(FULL_HAND).isPresent());
         assertFalse(person.computeHasThreeOfAKind(FULL_HAND).isPresent());
         assertFalse(person.computeHasTwoPair(FULL_HAND).isPresent());
-        assertEquals(220_000_000, handValue.get());
+        assertEquals(220_000_000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(FULL_HAND);
+        assertEquals(220_000_000, handValue);
     }
 
     @Test
@@ -147,10 +159,13 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand contain two pair")
     public void isHandTwoPair() {
-        Optional<Double> handValue = person.computeHasTwoPair(TWO_PAIR_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasTwoPair(TWO_PAIR_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasPair(TWO_PAIR_HAND).isPresent());
-        assertEquals(33_000, handValue.get());
+        assertEquals(33_000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(TWO_PAIR_HAND);
+        assertEquals(33_000, handValue);
     }
 
     @Test
@@ -199,19 +214,25 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a straight 1,2,3,4,5")
     public void isHandAStraightOnOne() {
-        Optional<Double> handValue = person.computeHasStraight(STRAIGHT_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasStraight(STRAIGHT_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasStraightFlush(STRAIGHT_HAND).isPresent());
-        assertEquals(1_500_000, handValue.get());
+        assertEquals(1_500_000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(STRAIGHT_HAND);
+        assertEquals(1_500_000, handValue);
     }
 
     @Test
     @DisplayName("Assert that a hand is a straight 10,J,Q,K,1")
     public void isHandARoyalFlush() {
-        Optional<Double> handValue = person.computeHasStraight(ROYAL_FLUSH_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasStraight(ROYAL_FLUSH_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasStraightFlush(ROYAL_FLUSH_HAND).isPresent());
-        assertEquals(6_000_000, handValue.get());
+        assertEquals(6_000_000, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(ROYAL_FLUSH_HAND);
+        assertEquals(6_000_000, handValue);
     }
 
     @Test
@@ -234,21 +255,27 @@ public class PersonTest {
     @Test
     @DisplayName("Assert that a hand is a straight 1, 2, 3, 4, 5 with same Color")
     public void isHandAStraightFlushOnOne() {
-        Optional<Double> handValue = person.computeHasStraightFlush(STRAIGHT_FLUSH_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasStraightFlush(STRAIGHT_FLUSH_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasColor(STRAIGHT_FLUSH_HAND).isPresent());
         assertFalse(person.computeHasStraight(STRAIGHT_FLUSH_HAND).isPresent());
-        assertEquals(15_000_000_000d, handValue.get());
+        assertEquals(15_000_000_000d, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(STRAIGHT_FLUSH_HAND);
+        assertEquals(15_000_000_000d, handValue);
     }
 
     @Test
     @DisplayName("Assert that a hand is a straight 10, J, Q, K, A with same Color")
     public void isHandARoyalStraightFlush() {
-        Optional<Double> handValue = person.computeHasStraightFlush(ROYAL_STRAIGHT_FLUSH_HAND);
-        assertTrue(handValue.isPresent());
+        Optional<Double> composedHandValue = person.computeHasStraightFlush(ROYAL_STRAIGHT_FLUSH_HAND);
+        assertTrue(composedHandValue.isPresent());
         assertFalse(person.computeHasColor(ROYAL_STRAIGHT_FLUSH_HAND).isPresent());
         assertFalse(person.computeHasStraight(ROYAL_STRAIGHT_FLUSH_HAND).isPresent());
-        assertEquals(60_000_000_000d, handValue.get());
+        assertEquals(60_000_000_000d, composedHandValue.get());
+
+        Double handValue = person.computeHandValue(ROYAL_STRAIGHT_FLUSH_HAND);
+        assertEquals(60_000_000_000d, handValue);
     }
 
     @Test
@@ -274,11 +301,11 @@ public class PersonTest {
                 )
         );
         // When
-        Integer handValue = person.computeSimpleHandValue(hand);
-        Integer handWiInteger = person.computeSimpleHandValue(handWithAce);
+        double handValue = person.computeSimpleHandValue(hand);
+        double handValueWithAce = person.computeSimpleHandValue(handWithAce);
 
         // Then
         assertEquals(44, handValue);
-        assertEquals(52, handWiInteger);
+        assertEquals(52, handValueWithAce);
     }
 }

@@ -4,6 +4,7 @@ import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.lang.Math.pow;
 
@@ -99,7 +100,23 @@ public class Person {
         }
     }
 
-    public Integer computeSimpleHandValue(@NotNull Hand hand) {
+    public Double computeSimpleHandValue(@NotNull Hand hand) {
         return hand.value(Tuple::max);
+    }
+
+    public Double computeHandValue(Hand hand) {
+        return Stream.of(
+                        computeHasStraightFlush(hand),
+                        computeHasColor(hand),
+                        computeHasStraight(hand),
+                        computeHasFourOfAKind(hand),
+                        computeHasPair(hand),
+                        computeHasTwoPair(hand),
+                        computeHasFullHouse(hand),
+                        computeHasThreeOfAKind(hand)
+                )
+                .flatMap(Optional::stream)
+                .reduce(Double::sum)
+                .orElseGet(() -> computeSimpleHandValue(hand));
     }
 }

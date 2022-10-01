@@ -2,7 +2,6 @@ package com.decathlon.katas.progfunc.poker;
 
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 
-import java.util.Comparator;
 import java.util.Optional;
 
 public class Dealer extends Person {
@@ -13,16 +12,13 @@ public class Dealer extends Person {
      * @return {@link Optional#empty()} when two {@link Hand} are equal
      */
     public Optional<Hand> compare(Hand hand1, Hand hand2) {
-        HandValue hand1Value = hand1.evaluate();
-        HandValue hand2Value = hand2.evaluate();
+        Double hand1Value = computeHandValue(hand1);
+        Double hand2Value = computeHandValue(hand2);
 
-        int handComparisonResult = Comparator
-                .comparing(HandValue::getValue)
-                .compare(hand1Value, hand2Value);
-        if(handComparisonResult < 0) {
-            return Optional.of(hand2);
-        } else if (handComparisonResult > 0) {
+        if(hand1Value > hand2Value) {
             return Optional.of(hand1);
+        } else if (hand2Value > hand1Value) {
+            return Optional.of(hand2);
         } else {
             return Optional.empty();
         }

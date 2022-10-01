@@ -12,21 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
 class DealerTest {
-
-    @Mock
-    Hand hand1;
-
-    @Mock
-    Hand hand2;
 
     @Test
     public void hand2IsWinner() {
         // Given
         Dealer dealer = new Dealer();
-        given(hand1.evaluate()).willReturn(HandValue.FOUR_OF_KIND);
-        given(hand2.evaluate()).willReturn(HandValue.STRAIGHT_FLUSH);
+        Hand hand1 = HandFixture.FOUR_OF_A_KIND_HAND;
+        Hand hand2 = HandFixture.STRAIGHT_FLUSH_HAND;
 
         // When
         Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
@@ -40,8 +33,8 @@ class DealerTest {
     public void hand1IsWinner() {
         // Given
         Dealer dealer = new Dealer();
-        given(hand1.evaluate()).willReturn(HandValue.STRAIGHT_FLUSH);
-        given(hand2.evaluate()).willReturn(HandValue.FOUR_OF_KIND);
+        Hand hand1 = HandFixture.STRAIGHT_FLUSH_HAND;
+        Hand hand2 = HandFixture.FOUR_OF_A_KIND_HAND;
 
         // When
         Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
@@ -55,11 +48,10 @@ class DealerTest {
     public void handsIsExEquo() {
         // Given
         Dealer dealer = new Dealer();
-        given(hand1.evaluate()).willReturn(HandValue.FOUR_OF_KIND);
-        given(hand2.evaluate()).willReturn(HandValue.FOUR_OF_KIND);
+        Hand hand1 = HandFixture.FOUR_OF_A_KIND_HAND;
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        Optional<Hand> winnerHand = dealer.compare(hand1, hand1);
 
         // Then
         assertTrue(winnerHand.isEmpty());

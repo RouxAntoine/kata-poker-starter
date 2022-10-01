@@ -84,7 +84,7 @@ public class HandTest {
         );
 
         // When
-        int value = hand.value(Tuple::max);
+        double value = hand.value(Tuple::max);
 
         // Then
         assertEquals(20, value);

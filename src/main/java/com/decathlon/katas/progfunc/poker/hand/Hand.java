@@ -64,14 +64,11 @@ public record Hand(List<Card> cards) {
         return (diffMin == numberOfFollowingCard - 1 || diffMax == numberOfFollowingCard - 1);
     }
 
-    public int value(ToIntFunction<Tuple> valueFunction) {
+    public double value(ToIntFunction<Tuple> valueFunction) {
         return cards.stream()
                 .map(card -> card.rank().getTuple())
                 .mapToInt(valueFunction)
+                .mapToDouble(Double::valueOf)
                 .sum();
-    }
-
-    public HandValue evaluate() {
-        return null;
     }
 }
