@@ -2,7 +2,6 @@ package com.decathlon.katas.progfunc.poker.card.criteria;
 
 /**
  * Rank of any card
- * @author deadbrain
  */
 public enum Rank implements Criteria {
     ACE(new Tuple(1, 14)),

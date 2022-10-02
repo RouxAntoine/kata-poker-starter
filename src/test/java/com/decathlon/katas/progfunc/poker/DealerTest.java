@@ -4,6 +4,7 @@ import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
 import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
+import com.decathlon.katas.progfunc.poker.hand.HandFixture;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

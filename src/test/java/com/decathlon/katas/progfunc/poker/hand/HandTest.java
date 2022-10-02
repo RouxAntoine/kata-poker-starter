@@ -1,16 +1,15 @@
-package com.decathlon.katas.progfunc.poker;
+package com.decathlon.katas.progfunc.poker.hand;
 
 import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
 import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.card.criteria.Tuple;
-import com.decathlon.katas.progfunc.poker.hand.Hand;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.plaf.IconUIResource;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HandTest {
 
@@ -28,50 +27,22 @@ public class HandTest {
         );
 
         // When
-        boolean hasTwoIdenticalCard = hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, 2);
+        int hasTwoIdenticalCard = hand.howManyNIdenticalCardsByCriteria(Card::rank, 2);
 
         // Then
-        assertTrue(hasTwoIdenticalCard);
+        assertEquals(1, hasTwoIdenticalCard);
     }
 
     @Test
-    void sortByMinRank() {
+    void hasNFollowingCard() {
         // Given
-        Hand hand = new Hand(
-                List.of(
-                        new Card(Rank.TWO, Color.DIAMOND),
-                        new Card(Rank.ACE, Color.TREFLE),
-                        new Card(Rank.FIVE, Color.TREFLE),
-                        new Card(Rank.FOUR, Color.TREFLE),
-                        new Card(Rank.KING, Color.TREFLE)
-                )
-        );
+        Hand hand = HandFixture.STRAIGHT_HAND;
+
         // When
-        List<Card> sortedHand = hand.sortByMinRank();
+        boolean hasFiveFollowingCard = hand.hasNFollowingCard(5);
 
         // Then
-        assertEquals(sortedHand.get(0).rank(), Rank.ACE);
-        assertEquals(sortedHand.get(1).rank(), Rank.TWO);
-    }
-
-    @Test
-    void sortByMaxRank() {
-        // Given
-        Hand hand = new Hand(
-                List.of(
-                        new Card(Rank.TWO, Color.DIAMOND),
-                        new Card(Rank.ACE, Color.TREFLE),
-                        new Card(Rank.FIVE, Color.TREFLE),
-                        new Card(Rank.FOUR, Color.TREFLE),
-                        new Card(Rank.KING, Color.TREFLE)
-                )
-        );
-        // When
-        List<Card> sortedHand = hand.sortByMaxRank();
-
-        // Then
-        assertEquals(sortedHand.get(0).rank(), Rank.TWO);
-        assertEquals(sortedHand.get(4).rank(), Rank.ACE);
+        assertTrue(hasFiveFollowingCard);
     }
 
     @Test
@@ -92,5 +63,37 @@ public class HandTest {
 
         // Then
         assertEquals(20, value);
+    }
+
+    @Test
+    void handContainedAKing() {
+        // Given
+        Hand handWithoutKing = new Hand(
+                List.of(
+                        new Card(Rank.TWO, Color.DIAMOND),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE)
+                )
+        );
+        Hand handWithKing = new Hand(
+                List.of(
+                        new Card(Rank.TWO, Color.DIAMOND),
+                        new Card(Rank.FOUR, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE),
+                        new Card(Rank.KING, Color.TREFLE),
+                        new Card(Rank.FIVE, Color.TREFLE)
+                )
+        );
+        // When
+        boolean doesHandContainedAKing = handWithoutKing.handContainedAKing();
+        // Then
+        assertFalse(doesHandContainedAKing);
+
+        // When
+        doesHandContainedAKing = handWithKing.handContainedAKing();
+        // Then
+        assertTrue(doesHandContainedAKing);
     }
 }

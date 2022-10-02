@@ -1,123 +1,133 @@
 package com.decathlon.katas.progfunc.poker;
 
 import com.decathlon.katas.progfunc.poker.card.Card;
-import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.card.criteria.Tuple;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
-import com.decathlon.katas.progfunc.poker.hand.HandValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.lang.Math.pow;
+import static com.decathlon.katas.progfunc.poker.hand.HandCoefficient.*;
 
 public class Person {
 
     public static final int TWO_CARD = 2;
-    public static final int FIVE_CARD = 5;
     private static final int THREE_CARD = 3;
     private static final int FOUR_CARD = 4;
-    private static final int REPEATED_ONE_TIME = 1;
+    public static final int FIVE_CARD = 5;
+
+    public static final int REPEATED_ONE_TIME = 1;
     public static final int REPEATED_TWO_TIME = 2;
 
-    public Optional<Double> computeHasPair(@NotNull Hand hand) {
-        if (hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, TWO_CARD) && this.computeHasFullHouse(hand).isEmpty()) {
-            return Optional.of( pow(10, HandValue.PAIR.getValue()) * hand.value(Tuple::max));
-        } else {
-            return Optional.empty();
-        }
+    private boolean isPair(@NotNull Hand hand) {
+        return hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_ONE_TIME;
     }
 
-    public Optional<Double> computeHasThreeOfAKind(@NotNull Hand hand) {
-        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD)
-                && this.computeHasFullHouse(hand).isEmpty()) {
-            return Optional.of(pow(10, HandValue.THREE_OF_A_KIND.getValue()) * hand.value(Tuple::max));
-        }
-        else {
-            return Optional.empty();
-        }
+    private boolean isTwoPair(@NotNull Hand hand) {
+        return hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_TWO_TIME;
     }
 
-    public Optional<Double> computeHasFourOfAKind(@NotNull Hand hand) {
-        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, FOUR_CARD)) {
-            return Optional.of( pow(10, HandValue.FOUR_OF_KIND.getValue()) * hand.value(Tuple::max));
-        }
-        else {
-            return Optional.empty();
-        }
+    private boolean isThreeOfAKind(@NotNull Hand hand) {
+        return hand.howManyNIdenticalCardsByCriteria(Card::rank, THREE_CARD) == REPEATED_ONE_TIME;
     }
 
-    public Optional<Double> computeHasFullHouse(@NotNull Hand hand) {
-        if(hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_ONE_TIME
-                && hand.hasOneTimeNIdenticalCardsByCriteria(Card::rank, THREE_CARD)) {
-            return Optional.of( pow(10, HandValue.FULL_HOUSE.getValue()) * hand.value(Tuple::max));
-        }
-        else {
-            return Optional.empty();
-        }
+    private boolean isFourOfAKind(@NotNull Hand hand) {
+        return hand.howManyNIdenticalCardsByCriteria(Card::rank, FOUR_CARD) == REPEATED_ONE_TIME;
     }
 
-    public Optional<Double> computeHasTwoPair(@NotNull Hand hand) {
-        if (hand.howManyNIdenticalCardsByCriteria(Card::rank, TWO_CARD) == REPEATED_TWO_TIME) {
-            return Optional.of(pow(10, HandValue.TWO_PAIR.getValue()) * hand.value(Tuple::max));
-        } else {
-            return Optional.empty();
-        }
+    private boolean isColor(@NotNull Hand hand) {
+        return hand.howManyNIdenticalCardsByCriteria(Card::color, FIVE_CARD) == REPEATED_ONE_TIME;
     }
 
-    public Optional<Double> computeHasColor(@NotNull Hand hand) {
-        if(hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD)
-                && this.computeHasStraightFlush(hand).isEmpty()) {
-            return Optional.of(pow(10, HandValue.FLUSH.getValue()) * hand.value(Tuple::max));
-        }
-        else {
-            return Optional.empty();
-        }
+    private boolean isStraight(@NotNull Hand hand) {
+        return hand.hasNFollowingCard(FIVE_CARD);
     }
 
-    public Optional<Double> computeHasStraight(@NotNull Hand hand) {
-        if(hand.hasNFollowingCard(FIVE_CARD)
-                && this.computeHasStraightFlush(hand).isEmpty()) {
-            if(hand.cards().stream().anyMatch(card -> card.rank().equals(Rank.KING))) {
-                return Optional.of(pow(10, HandValue.STRAIGHT.getValue()) * hand.value(Tuple::max));
-            } else {
-                return Optional.of(pow(10, HandValue.STRAIGHT.getValue()) * hand.value(Tuple::min));
+    private boolean isFullOfHouse(@NotNull Hand hand) {
+        return isPair(hand) && isThreeOfAKind(hand);
+    }
+
+    private boolean isStraightFlush(@NotNull Hand hand) {
+        return isStraight(hand) && isColor(hand);
+    }
+
+    public Optional<Double> computeAPair(@NotNull Hand hand) {
+        if (isPair(hand) && !isFullOfHouse(hand)) {
+            return Optional.of(PAIR.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeAThreeOfAKind(@NotNull Hand hand) {
+        if (isThreeOfAKind(hand) && !isFullOfHouse(hand)) {
+            return Optional.of(THREE_OF_A_KIND.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeAFourOfAKind(@NotNull Hand hand) {
+        if (isFourOfAKind(hand)) {
+            return Optional.of(FOUR_OF_KIND.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeAFullHouse(@NotNull Hand hand) {
+        if (isFullOfHouse(hand)) {
+            return Optional.of(FULL_HOUSE.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeATwoPair(@NotNull Hand hand) {
+        if (isTwoPair(hand)) {
+            return Optional.of(TWO_PAIR.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeAColor(@NotNull Hand hand) {
+        if (isColor(hand) && !isStraightFlush(hand)) {
+            return Optional.of(FLUSH.computeHandValue(hand.value(Tuple::max)));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> computeAStraight(@NotNull Hand hand) {
+        if (isStraight(hand) && !isStraightFlush(hand)) {
+            if (hand.handContainedAKing()) {
+                return Optional.of(STRAIGHT.computeHandValue(hand.value(Tuple::max)));
             }
+            return Optional.of(STRAIGHT.computeHandValue(hand.value(Tuple::min)));
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
-    public Optional<Double> computeHasStraightFlush(@NotNull Hand hand) {
-        if(hand.hasNFollowingCard(FIVE_CARD) && hand.hasOneTimeNIdenticalCardsByCriteria(Card::color, FIVE_CARD)) {
-            if(hand.cards().stream().anyMatch(card -> card.rank().equals(Rank.KING))) {
-                return Optional.of(pow(10, HandValue.STRAIGHT_FLUSH.getValue()) * hand.value(Tuple::max));
+    public Optional<Double> computeAStraightFlush(@NotNull Hand hand) {
+        if (isStraightFlush(hand)) {
+            if (hand.handContainedAKing()) {
+                return Optional.of(STRAIGHT_FLUSH.computeHandValue(hand.value(Tuple::max)));
             }
-            else {
-                return Optional.of(pow(10, HandValue.STRAIGHT_FLUSH.getValue()) * hand.value(Tuple::min));
-            }
+            return Optional.of(STRAIGHT_FLUSH.computeHandValue(hand.value(Tuple::min)));
         }
-        else {
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
     public Double computeSimpleHandValue(@NotNull Hand hand) {
-        return hand.value(Tuple::max);
+        return HIGH_CARD.computeHandValue(hand.value(Tuple::max));
     }
 
     public Double computeHandValue(@NotNull Hand hand) {
         return Stream.of(
-                        computeHasStraightFlush(hand),
-                        computeHasColor(hand),
-                        computeHasStraight(hand),
-                        computeHasFourOfAKind(hand),
-                        computeHasPair(hand),
-                        computeHasTwoPair(hand),
-                        computeHasFullHouse(hand),
-                        computeHasThreeOfAKind(hand)
+                        computeAStraightFlush(hand),
+                        computeAColor(hand),
+                        computeAStraight(hand),
+                        computeAFourOfAKind(hand),
+                        computeAPair(hand),
+                        computeATwoPair(hand),
+                        computeAFullHouse(hand),
+                        computeAThreeOfAKind(hand)
                 )
                 .flatMap(Optional::stream)
                 .reduce(Double::sum)

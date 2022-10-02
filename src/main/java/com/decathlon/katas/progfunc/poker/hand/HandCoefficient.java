@@ -1,6 +1,8 @@
 package com.decathlon.katas.progfunc.poker.hand;
 
-public enum HandValue {
+import static java.lang.Math.pow;
+
+public enum HandCoefficient {
     // Quinte flush
     STRAIGHT_FLUSH(9),
     // Carré
@@ -20,13 +22,13 @@ public enum HandValue {
     // Carte Haute
     HIGH_CARD(1);
 
-    private final int value;
+    private final int coefficient;
 
-    HandValue(int value) {
-        this.value = value;
+    HandCoefficient(int coefficient) {
+        this.coefficient = coefficient;
     }
 
-    public int getValue() {
-        return value;
+    public double computeHandValue(double handValue) {
+        return pow(10, coefficient) * handValue;
     }
 }
