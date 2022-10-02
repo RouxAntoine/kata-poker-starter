@@ -132,7 +132,14 @@ class DealerTest {
 
         // Then
         assertNotNull(player1.getHand());
+        assertEquals(5, player1.getHand().cards().size());
         assertNotNull(player2.getHand());
+        assertEquals(5, player2.getHand().cards().size());
         assertNotNull(player3.getHand());
+        assertEquals(5, player3.getHand().cards().size());
+
+        assertNotEquals(player1.getHand().cards(), player2.getHand().cards());
+        assertNotEquals(player1.getHand().cards(), player3.getHand().cards());
+        assertNotEquals(player2.getHand().cards(), player3.getHand().cards());
     }
 }
