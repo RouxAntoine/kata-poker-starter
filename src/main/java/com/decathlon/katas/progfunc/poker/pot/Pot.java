@@ -1,4 +1,4 @@
-package com.decathlon.katas.progfunc.poker;
+package com.decathlon.katas.progfunc.poker.pot;
 
 import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
@@ -9,19 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Pot {
-
-    public static final int POKER_DEFAULT_POT_SIZE = 52;
-    public static final int POKER_DEFAULT_HAND_SIZE = 5;
+public sealed abstract class Pot permits PokerPot {
 
     private final int initialPotSize;
     public final ArrayList<Card> cards;
     private final int handSize;
     private final Random r = new Random();
-
-    public Pot() {
-        this(POKER_DEFAULT_POT_SIZE, POKER_DEFAULT_HAND_SIZE);
-    }
 
     public Pot(int initialPotSize, int handSize) {
         this.initialPotSize = initialPotSize;

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -57,5 +58,10 @@ public record Hand(List<Card> cards) {
 
     public boolean handContainedAKing() {
         return cards().stream().anyMatch(card -> card.rank().equals(Rank.KING));
+    }
+
+    @Override
+    public String toString() {
+        return "[" + cards.stream().map(Card::toString).collect(Collectors.joining(",")) + ']';
     }
 }

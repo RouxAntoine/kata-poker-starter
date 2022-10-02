@@ -1,6 +1,6 @@
 package com.decathlon.katas.progfunc.poker.actors;
 
-import com.decathlon.katas.progfunc.poker.Pot;
+import com.decathlon.katas.progfunc.poker.pot.Pot;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 
 import java.util.Arrays;

@@ -6,6 +6,8 @@ import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
 import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
+import com.decathlon.katas.progfunc.poker.pot.PokerPot;
+import com.decathlon.katas.progfunc.poker.pot.Pot;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DealerTest {
 
     private final Dealer dealer = new Dealer();
-    private final Pot pot = new Pot();
+    private final Pot pot = new PokerPot();
 
     @Test
     public void compositionStraightFlushWinnerWithHighestHandValue() {
