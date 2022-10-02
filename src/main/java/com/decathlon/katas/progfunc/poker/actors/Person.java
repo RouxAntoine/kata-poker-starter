@@ -1,4 +1,4 @@
-package com.decathlon.katas.progfunc.poker;
+package com.decathlon.katas.progfunc.poker.actors;
 
 import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Tuple;

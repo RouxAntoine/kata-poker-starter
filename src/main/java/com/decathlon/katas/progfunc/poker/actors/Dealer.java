@@ -1,7 +1,9 @@
-package com.decathlon.katas.progfunc.poker;
+package com.decathlon.katas.progfunc.poker.actors;
 
+import com.decathlon.katas.progfunc.poker.Pot;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class Dealer extends Person {
@@ -22,5 +24,10 @@ public class Dealer extends Person {
         } else {
             return Optional.empty();
         }
+    }
+
+    public void dealIn(Pot pot, Player ...players) {
+        Arrays.stream(players)
+                .forEach(player -> player.setHand(pot.getRandomHand()));
     }
 }

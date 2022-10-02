@@ -1,5 +1,6 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.actors.Person;
 import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
 import com.decathlon.katas.progfunc.poker.card.criteria.Rank;

@@ -1,21 +1,23 @@
 package com.decathlon.katas.progfunc.poker;
 
+import com.decathlon.katas.progfunc.poker.actors.Dealer;
+import com.decathlon.katas.progfunc.poker.actors.Player;
 import com.decathlon.katas.progfunc.poker.card.Card;
 import com.decathlon.katas.progfunc.poker.card.criteria.Color;
 import com.decathlon.katas.progfunc.poker.card.criteria.Rank;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
-import com.decathlon.katas.progfunc.poker.hand.HandFixture;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.decathlon.katas.progfunc.poker.hand.HandFixture.FOUR_OF_A_KIND_HAND;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DealerTest {
 
     private final Dealer dealer = new Dealer();
+    private final Pot pot = new Pot();
 
     @Test
     public void compositionStraightFlushWinnerWithHighestHandValue() {
@@ -110,12 +112,27 @@ class DealerTest {
     @Test
     public void handsIsIdentical() {
         // Given
-        Hand hand1 = HandFixture.FOUR_OF_A_KIND_HAND;
+        Hand hand1 = FOUR_OF_A_KIND_HAND;
 
         // When
         Optional<Hand> winnerHand = dealer.compare(hand1, hand1);
 
         // Then
         assertTrue(winnerHand.isEmpty());
+    }
+
+    @Test
+    public void dealInCards() {
+        Player player1 = new Player();
+        Player player2 = new Player();
+        Player player3 = new Player();
+
+        // When
+        dealer.dealIn(pot, player1, player2, player3);
+
+        // Then
+        assertNotNull(player1.getHand());
+        assertNotNull(player2.getHand());
+        assertNotNull(player3.getHand());
     }
 }
