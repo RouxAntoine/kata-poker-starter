@@ -11,9 +11,8 @@ import com.decathlon.katas.progfunc.poker.pot.Pot;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.decathlon.katas.progfunc.poker.hand.HandFixture.FOUR_OF_A_KIND_HAND;
+import static com.decathlon.katas.progfunc.poker.hand.HandFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DealerTest {
@@ -44,11 +43,11 @@ class DealerTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand2);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
     }
 
     @Test
@@ -74,11 +73,11 @@ class DealerTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand1);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand1);
     }
 
     @Test
@@ -104,23 +103,39 @@ class DealerTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand2);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
     }
 
     @Test
-    public void handsIsIdentical() {
+    public void threeHandComparison() {
+        // Given
+        Hand hand1 = COLOR_HAND;
+        Hand hand2 = FOUR_OF_A_KIND_HAND;
+        Hand hand3 = FULL_HAND;
+
+        // When
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2, hand3);
+
+        // Then
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
+    }
+
+    @Test
+    public void handsAreIdentical() {
         // Given
         Hand hand1 = FOUR_OF_A_KIND_HAND;
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand1);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand1);
 
         // Then
-        assertTrue(winnerHand.isEmpty());
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(2, winnersHand.size());
     }
 
     @Test

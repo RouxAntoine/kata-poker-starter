@@ -5,6 +5,7 @@ import com.decathlon.katas.progfunc.poker.actors.Player;
 import com.decathlon.katas.progfunc.poker.hand.Hand;
 import com.decathlon.katas.progfunc.poker.pot.PokerPot;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,23 +16,22 @@ public class PokerApplication {
 
     public static void main(String[] args) {
         PokerPot pot = new PokerPot();
-        Player player1 = new Player("Antoine");
-        Player player2 = new Player("Bot-1");
         Dealer dealer = new Dealer();
+        Player[] players = new Player[]{
+                new Player("Antoine"),
+                new Player("Bot-1"),
+                new Player("Bot-2")
+        };
 
-        List<Player> players = List.of(player1, player2);
-        dealer.dealIn(pot, players.toArray(Player[]::new));
+        dealer.dealIn(pot, players);
 
-        Map<Hand, Player> playerByHand = players.stream().collect(Collectors.toMap(Player::getHand, identity()));
+        Map<Hand, Player> playerByHand = Arrays.stream(players)
+                .collect(Collectors.toMap(Player::getHand, identity()));
 
-        Hand player1Hand = player1.getHand();
-        Hand player2Hand = player2.getHand();
-
-        dealer.compare(player1Hand, player2Hand)
+        Hand[] playersHand = Arrays.stream(players).map(Player::getHand).toArray(Hand[]::new);
+        dealer.getWinner(playersHand)
+                .stream()
                 .map(playerByHand::get)
-                .ifPresentOrElse(
-                        player -> System.out.printf("Winner is %s with hand %s\n", player.getName(), player.getHand().cards()),
-                        () -> System.out.println("Exquo between all player")
-                );
+                .forEach(player -> System.out.printf("Winner is %s with hand %s\n", player.getName(), player.getHand()));
     }
 }

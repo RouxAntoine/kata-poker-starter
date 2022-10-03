@@ -62,6 +62,6 @@ public record Hand(List<Card> cards) {
 
     @Override
     public String toString() {
-        return "[" + cards.stream().map(Card::toString).collect(Collectors.joining(",")) + ']';
+        return "[" + cards.stream().map(Card::toString).collect(Collectors.joining(", ")) + ']';
     }
 }

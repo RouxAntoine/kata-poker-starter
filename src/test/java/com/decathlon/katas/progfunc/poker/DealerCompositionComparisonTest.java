@@ -9,10 +9,8 @@ import com.decathlon.katas.progfunc.poker.hand.HandFixture;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DealerCompositionComparisonTest {
 
@@ -25,18 +23,18 @@ class DealerCompositionComparisonTest {
         Hand hand2 = HandFixture.FOUR_OF_A_KIND_HAND;
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand1);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand1);
 
         // When
-        winnerHand = dealer.compare(hand2, hand1);
+        winnersHand = dealer.getWinner(hand2, hand1);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand1);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand1);
     }
 
     @Test
@@ -62,11 +60,11 @@ class DealerCompositionComparisonTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand2);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
     }
 
     @Test
@@ -92,11 +90,11 @@ class DealerCompositionComparisonTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand2);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
     }
 
     @Test
@@ -122,10 +120,10 @@ class DealerCompositionComparisonTest {
         );
 
         // When
-        Optional<Hand> winnerHand = dealer.compare(hand1, hand2);
+        List<Hand> winnersHand = dealer.getWinner(hand1, hand2);
 
         // Then
-        assertTrue(winnerHand.isPresent());
-        assertEquals(winnerHand.get(), hand2);
+        assertFalse(winnersHand.isEmpty());
+        assertEquals(winnersHand.get(0), hand2);
     }
 }
